@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activites.MovieDetailsActivity">
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical1_line"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vertical2_line"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/horizontal1_line"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/horizontal2_line"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <ImageView
+        android:id="@+id/movie_details_movie_image_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_add_a_photo_black_24dp"
+        app:layout_constraintBottom_toTopOf="@id/horizontal1_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/movie_details_title_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/title"
+        android:textColor="@color/colorBlack"
+        android:textSize="22sp"
+        app:layout_constraintStart_toEndOf="@id/vertical1_line"
+        app:layout_constraintTop_toBottomOf="@id/horizontal1_line" />
+
+    <TextView
+        android:id="@+id/movie_details_genre_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="3dp"
+        android:text="Drama"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@id/movie_details_title_text_view"
+        app:layout_constraintTop_toBottomOf="@id/movie_details_title_text_view" />
+
+    <TextView
+        android:id="@+id/movie_details_rating_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="7.3"
+        android:textColor="@color/colorGreen"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@id/vertical2_line"
+        app:layout_constraintTop_toBottomOf="@id/horizontal2_line" />
+
+    <TextView
+        android:id="@+id/movie_details_release_year_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="2018"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toEndOf="@id/vertical1_line"
+        app:layout_constraintTop_toBottomOf="@id/horizontal2_line" />
+
+</android.support.constraint.ConstraintLayout>
