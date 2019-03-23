@@ -81,12 +81,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public Cursor fetchData(){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor  cursor = db.rawQuery("select * from " + TABLE_NAME, null);
-        return cursor;
-    }
-
     public void deleteData(){
         SQLiteDatabase db = this.getWritableDatabase();
         Log.d(TAG, "deleteData: DELETE DB");
@@ -115,6 +109,19 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             cursor.close();
         }
         return false;
+    }
+
+    public boolean checkAlreadyExist(String title) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT " + COL2 + " FROM " + TABLE_NAME + " WHERE " + COL2 + "='" + title + "'", null);
+        if (cursor.moveToFirst()) {
+            db.close();
+            Log.d("Record  Already Exists", "Table is:" + TABLE_NAME + " ColumnName: " + title);
+            return true;//record Exists
+        }else {
+            db.close();
+            return false;
+        }
     }
 
     public int numberOfRows(){

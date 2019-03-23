@@ -2,6 +2,7 @@ package com.example.examapplication.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -20,8 +21,10 @@ import com.example.examapplication.Activites.MainActivity;
 import com.example.examapplication.Activites.MovieDetailsActivity;
 import com.example.examapplication.Objects.Movie;
 import com.example.examapplication.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -69,7 +72,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<MovieViewHolder> {
 
         Picasso.with(context).
                 load(movie.getImage())
-                .into(movieViewHolder.movieImageView);
+                .into(movieViewHolder.movieImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+
       /*  Glide.with(context)
                 .asBitmap()
                 .load(movie.getImage())
