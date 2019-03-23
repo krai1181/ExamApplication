@@ -72,16 +72,16 @@ public class MovieListActivity extends AppCompatActivity {
 
         //recycler view
         initRecyclerView();
-        Log.d(TAG, "onCreate: load movies size: " + moviesList.size());
+        Log.d(TAG, "onCreate: load movies size: " + moviesList.size() + " cursor is Closed() " + cursor.isClosed());
 
 
     }
 
     @Override
     protected void onStart() {
-        Log.d(TAG, "onStart: start");
+        Log.d(TAG, "onStart: start Movie List Activity");
         super.onStart();
-        Movie newMovie = checkFromDataBase();
+       Movie newMovie = checkFromDataBase();
         if(!moviesList.contains(newMovie))
             moviesList.add(newMovie);
 
@@ -90,27 +90,30 @@ public class MovieListActivity extends AppCompatActivity {
     }
 
     public void readFromData() {
-        cursor = dataBaseHelper.readFromData(db);
+        cursor = dataBaseHelper.readFromData();
+        Log.d(TAG, "readFromData: cursor count " + cursor.getCount() + "moveToFirst is " + cursor.moveToFirst());
 
-        Log.d(TAG, "readFromData: cursor count " + cursor.getCount());
-        cursor.moveToFirst();
-
-        do {
-            String[] strGenre = convertStringToArray(cursor.getString(4));
-            Movie someMovie = new Movie(cursor.getString(0), cursor.getString(1),
-                    cursor.getDouble(2), cursor.getInt(3), strGenre);
-                    moviesList.add(someMovie);
-            Log.d(TAG, "readFromData: movie list size  " + moviesList.size());
-        } while (cursor.moveToNext());
+        if (cursor.moveToFirst()) {
+            while (cursor.moveToNext()) {
+                String[] strGenre = convertStringToArray(cursor.getString(4));
+                Movie someMovie = new Movie(cursor.getString(0), cursor.getString(1),
+                        cursor.getDouble(2), cursor.getInt(3), strGenre);
+                moviesList.add(someMovie);
+                Log.d(TAG, "readFromData: movie list size  " + moviesList.size());
+            }
+        }
 
     }
 
     public Movie checkFromDataBase() {
-        cursor = dataBaseHelper.readFromData(db);
+        cursor = dataBaseHelper.readFromData();
+        if(cursor.getCount() == 0){
+            Log.d(TAG, "checkFromDataBase: ERROR! No movie to read");
+        }
 
         Movie m;
         Log.d(TAG, "readFromData: cursor count " + cursor.getCount());
-        cursor.moveToFirst();
+        //cursor.moveToFirst();
 
         do {
             String[] strGenre = convertStringToArray(cursor.getString(4));

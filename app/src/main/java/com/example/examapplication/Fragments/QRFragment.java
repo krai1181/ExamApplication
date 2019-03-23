@@ -37,7 +37,6 @@ import java.util.ArrayList;
 public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeReadListener {
     private static final String TAG = "QRFragment";
 
-    ArrayList<Movie> moviesList;
 
     TextView qrResultTextView;
 
@@ -60,7 +59,6 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
             appCompatActivity.getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        moviesList = new ArrayList<>();
 
         qrResultTextView = view.findViewById(R.id.scan_code_text_view);
         qrCodeReaderView = view.findViewById(R.id.qr_decoder_view);
@@ -161,7 +159,7 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
         db = dataBaseHelper.getReadableDatabase();
 
         // readFromData
-        Cursor cursor = dataBaseHelper.readFromData(db);
+        Cursor cursor = dataBaseHelper.readFromData();
 
         Log.d(TAG, "readFromData: cursor count " + cursor.getCount());
         cursor.moveToFirst();
@@ -172,11 +170,13 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
             Movie someMovie = new Movie(cursor.getString(0), cursor.getString(1),
                     cursor.getDouble(2), cursor.getInt(3), strGenre);
 
-            moviesList.add(someMovie);
+
 
             //checking data
-            if (!cursor.getString(0).equals(m.getTitle()))
+            if (!cursor.getString(0).equals(m.getTitle())){
                 answerFromDB = true;
+               // moviesList.add(someMovie);
+            }
              else answerFromDB = false;
 
         } while (cursor.moveToNext());

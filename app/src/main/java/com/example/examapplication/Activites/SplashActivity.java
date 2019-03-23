@@ -39,6 +39,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
     static DataBaseHelper dataBaseHelper;
+    SQLiteDatabase db;
     List<Movie> movies;
     private Boolean isSuccsess = false;
 
@@ -56,8 +57,8 @@ public class SplashActivity extends AppCompatActivity {
 
         //db
         dataBaseHelper = new DataBaseHelper(this);
-        dataBaseHelper.deleteData();
 
+        //dataBaseHelper.deleteData();
 
         //work with json
         jsonResultTextView = findViewById(R.id.jsonTextView);
@@ -94,10 +95,14 @@ public class SplashActivity extends AppCompatActivity {
                          + "genre " + m.getGenre() + "MOVIES SIZE : " + movies.size());
 
                          //save to db
-                         addDataToDB(m);
+                         if(!dataBaseHelper.isTableExists(db,DataBaseHelper.TABLE_NAME) || dataBaseHelper.numberOfRows()<movies.size()){
+                             addDataToDB(m);
+                         }else{
+                             Log.d(TAG, "onResponse: DB already exist" + " number of rows is " + dataBaseHelper.numberOfRows());
+                         }
                          dataBaseHelper.close();
 
-                         Log.d(TAG, "onResponse: movies.size" + movies.size());
+                         Log.d(TAG, "onResponse: movies.size is " + movies.size());
                      }
                     if(isSuccsess){
 

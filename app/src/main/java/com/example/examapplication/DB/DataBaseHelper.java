@@ -3,6 +3,7 @@ package com.example.examapplication.DB;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     public DataBaseHelper(Context context) {
         super(context, TABLE_NAME, null, DATABASE_VERSION);
+        Log.d(TAG, "DataBaseHelper: Constructor");
     }
 
     @Override
@@ -39,6 +41,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + COL5 + " INTEGER, "
                 + COL6 + " TEXT" + ")";
         db.execSQL(createTable);
+        Log.d(TAG, "onCreate: ");
 
     }
 
@@ -47,10 +50,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
 
-    }
-
-    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        onUpgrade(db, oldVersion, newVersion);
     }
 
     public boolean addData(String title,String image, double rating, int releaseYear, String genre){
@@ -71,10 +70,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return true;
     }
 
-    public Cursor readFromData(SQLiteDatabase db){
+    public Cursor readFromData(){
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] projection = {COL2,COL3,COL4,COL5,COL6};
         Cursor cursor = db.query(TABLE_NAME,projection,null,null,null,null,null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
 
+        return cursor;
+    }
+
+    public Cursor fetchData(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor  cursor = db.rawQuery("select * from " + TABLE_NAME, null);
         return cursor;
     }
 
@@ -84,6 +93,38 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.execSQL("delete from "+ TABLE_NAME);
 
     }
+
+    public boolean isTableExists(SQLiteDatabase db, String tableName) {
+            if(db == null || !db.isOpen()) {
+                db = getReadableDatabase();
+            }
+
+            if(!db.isReadOnly()) {
+                db.close();
+                db = getReadableDatabase();
+            }
+
+
+        Cursor cursor = db.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+ tableName +"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                Log.d(TAG, "isTableExists: " + cursor.getCount() + "moveToFirst" + cursor.moveToFirst());
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
+
+    public int numberOfRows(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        int numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
+        return numRows;
+    }
+
+
+
 
 
 }

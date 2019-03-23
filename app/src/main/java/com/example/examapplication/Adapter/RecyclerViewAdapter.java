@@ -62,7 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         Log.d(TAG, "onBindViewHolder: called");
 
         final Movie movie = movies.get(position);
-        Log.d(TAG, "onBindViewHolder: " + movies.size());
+        Log.d(TAG, "onBindViewHolder: Movies size is : " + movies.size());
 
         Collections.sort(movies);
 
