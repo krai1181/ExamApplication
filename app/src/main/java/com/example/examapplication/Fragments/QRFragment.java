@@ -41,6 +41,7 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
     TextView qrResultTextView;
 
     QRCodeReaderView qrCodeReaderView;
+    AppCompatActivity appCompatActivity;
 
 
     DataBaseHelper dataBaseHelper;
@@ -51,7 +52,7 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
-        final AppCompatActivity appCompatActivity = (AppCompatActivity) getActivity();
+          appCompatActivity = (AppCompatActivity) getActivity();
 
         //back home button
         if (appCompatActivity.getSupportActionBar() != null) {
@@ -78,7 +79,7 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
 
 
         //string JSON TO TEXT
-        String jsonMovie = "{\n" +
+   /*     String jsonMovie = "{\n" +
                 "  \"title\": \"The Godfather\",\n" +
                 "  \"image\": \"https://www.imdb.com/title/tt0068646/mediaviewer/rm746868224\",\n" +
                 "  \"rating\": 9.2,\n" +
@@ -103,7 +104,7 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
         }else {
              Snackbar.make(appCompatActivity.findViewById(R.id.fragments_container),"Current movie already exist in the Database " ,Snackbar.LENGTH_SHORT).show();
         }
-
+*/
 
 
 
@@ -194,11 +195,20 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
         Log.d(TAG, "onQRCodeRead: result is  " + text);
-       /* Gson gson = new GsonBuilder().create();
+
+        Gson gson = new GsonBuilder().create();
         Movie newMovie = gson.fromJson(text, Movie.class);
         Log.d(TAG, "onCreateView: --------------" + newMovie.getTitle());
 
         boolean answer = checkDataInDB(newMovie);
-        Log.d(TAG, "onCreateView: " + answer);*/
+        Log.d(TAG, "onCreateView: " + answer);
+
+        if(answer){
+            SplashActivity.addDataToDB(newMovie);
+        }else {
+            Snackbar.make(appCompatActivity.findViewById(R.id.fragments_container),"Current movie already exist in the Database " ,Snackbar.LENGTH_SHORT).show();
+        }
+
+        qrResultTextView.setText(text);
     }
 }
