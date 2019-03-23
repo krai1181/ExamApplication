@@ -77,10 +77,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<MovieViewHolder> {
                     public void onSuccess() {
 
                     }
-
                     @Override
                     public void onError() {
-
+                        Log.d(TAG, "onError: Picasso error ");
                     }
                 });
 

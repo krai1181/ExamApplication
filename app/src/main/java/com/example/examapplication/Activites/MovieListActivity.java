@@ -96,13 +96,13 @@ public class MovieListActivity extends AppCompatActivity {
         Log.d(TAG, "readFromData: cursor count " + cursor.getCount() + "moveToFirst is " + cursor.moveToFirst());
 
         if (cursor.moveToFirst()) {
-            while (cursor.moveToNext()) {
+            do {
                 String[] strGenre = convertStringToArray(cursor.getString(4));
                 Movie someMovie = new Movie(cursor.getString(0), cursor.getString(1),
                         cursor.getDouble(2), cursor.getInt(3), strGenre);
                 moviesList.add(someMovie);
                 Log.d(TAG, "readFromData: movie list size  " + moviesList.size());
-            }
+            }while (cursor.moveToNext());
         }
 
     }

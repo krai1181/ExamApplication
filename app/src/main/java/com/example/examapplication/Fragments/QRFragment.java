@@ -67,7 +67,7 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
         // Use this function to enable/disable decoding
         qrCodeReaderView.setQRDecodingEnabled(true);
         // Use this function to change the autofocus interval (default is 5 secs)
-        qrCodeReaderView.setAutofocusInterval(2000L);
+        //qrCodeReaderView.setAutofocusInterval(2000L);
         // Use this function to enable/disable Torch
         qrCodeReaderView.setTorchEnabled(true);
         // Use this function to set front camera preview
@@ -77,9 +77,9 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
 
 
         //string JSON TO TEXT
-      /*  String jsonMovie = "{\n" +
+      /* String jsonMovie = "{\n" +
                 "  \"title\": \"The Godfather\",\n" +
-                "  \"image\": \"https://www.imdb.com/title/tt0068646/mediaviewer/rm746868224.jpg\",\n" +
+                "  \"image\": \"https://www.imdb.com/title/tt0068646/mediaviewer/rm746868224\",\n" +
                 "  \"rating\": 9.2,\n" +
                 "  \"releaseYear\": 1972,\n" +
                 "  \"genre\": [\n" +

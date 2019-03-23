@@ -100,7 +100,7 @@ public class SplashActivity extends AppCompatActivity {
                          + "genre " + m.getGenre() + "MOVIES SIZE : " + movies.size());
 
                          //save to db
-                         if(!dataBaseHelper.isTableExists(db,DataBaseHelper.TABLE_NAME) || dataBaseHelper.numberOfRows()<movies.size()){
+                         if(!dataBaseHelper.isTableExists(db,DataBaseHelper.TABLE_NAME) || dataBaseHelper.numberOfRows() <= movies.size()){
                                  addDataToDB(m);
                          }else{
                              Log.d(TAG, "onResponse: DB already exist" + " number of rows is " + dataBaseHelper.numberOfRows());
