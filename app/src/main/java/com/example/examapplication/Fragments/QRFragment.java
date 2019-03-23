@@ -27,8 +27,8 @@ import com.example.examapplication.Objects.Movie;
 import com.example.examapplication.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import android.support.design.widget.Snackbar;
 
+import android.support.design.widget.Snackbar;
 
 
 import java.util.ArrayList;
@@ -45,14 +45,13 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
 
 
     DataBaseHelper dataBaseHelper;
-    SQLiteDatabase db;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_qr, container, false);
-          appCompatActivity = (AppCompatActivity) getActivity();
+        appCompatActivity = (AppCompatActivity) getActivity();
 
         //back home button
         if (appCompatActivity.getSupportActionBar() != null) {
@@ -77,11 +76,10 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
         qrCodeReaderView.setBackCamera();
 
 
-
-        //string JSON TO TEXT
-   /*     String jsonMovie = "{\n" +
+        /*//string JSON TO TEXT
+        String jsonMovie = "{\n" +
                 "  \"title\": \"The Godfather\",\n" +
-                "  \"image\": \"https://www.imdb.com/title/tt0068646/mediaviewer/rm746868224\",\n" +
+                "  \"image\": \"https://www.imdb.com/title/tt0068646/mediaviewer/rm746868224.jpg\",\n" +
                 "  \"rating\": 9.2,\n" +
                 "  \"releaseYear\": 1972,\n" +
                 "  \"genre\": [\n" +
@@ -93,21 +91,16 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
         //parse json
         Gson gson = new GsonBuilder().create();
         Movie newMovie = gson.fromJson(jsonMovie, Movie.class);
-        Log.d(TAG, "onCreateView: --------------" + newMovie.getTitle());
+        Log.d(TAG, "onCreateView: --------------" + newMovie.getTitle() + " " + newMovie.getImage());
 
         boolean answer = checkDataInDB(newMovie);
         Log.d(TAG, "onCreateView: " + answer);
 
-        if(answer){
+        if (!answer) {
             SplashActivity.addDataToDB(newMovie);
-
-        }else {
-             Snackbar.make(appCompatActivity.findViewById(R.id.fragments_container),"Current movie already exist in the Database " ,Snackbar.LENGTH_SHORT).show();
-        }
-*/
-
-
-
+        } else {
+            Snackbar.make(appCompatActivity.findViewById(R.id.fragments_container), "Current movie already exist in the Database ", Snackbar.LENGTH_SHORT).show();
+        }*/
 
         return view;
     }
@@ -153,42 +146,34 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
     }
 
     private boolean checkDataInDB(Movie m) {
-
         boolean answerFromDB;
         //create DBHelper
         dataBaseHelper = new DataBaseHelper(getContext());
-        db = dataBaseHelper.getReadableDatabase();
-
+        dataBaseHelper.getReadableDatabase();
         // readFromData
         Cursor cursor = dataBaseHelper.readFromData();
 
         Log.d(TAG, "readFromData: cursor count " + cursor.getCount());
-        cursor.moveToFirst();
+        if (cursor.moveToFirst()) {
 
-        do {
-            String[] strGenre = MovieListActivity.convertStringToArray(cursor.getString(4));
-
-            Movie someMovie = new Movie(cursor.getString(0), cursor.getString(1),
-                    cursor.getDouble(2), cursor.getInt(3), strGenre);
-
-
-
-            //checking data
-            if (!cursor.getString(0).equals(m.getTitle())){
-                answerFromDB = true;
-               // moviesList.add(someMovie);
-            }
-             else answerFromDB = false;
-
-        } while (cursor.moveToNext());
-
+            do {
+                //checking data
+                if (cursor.getString(0).equals(m.getTitle())) {
+                    answerFromDB = true;
+                    Log.d(TAG, "checkDataInDB: this item already exist in database");
+                } else {
+                    answerFromDB = false;
+                    Log.d(TAG, "checkDataInDB: this item does not exist in database");
+                }
+            } while (cursor.moveToNext());
+        } else {
+            answerFromDB = false;
+        }
         //close db
         cursor.close();
         dataBaseHelper.close();
-        db.close();
 
         return answerFromDB;
-
     }
 
 
