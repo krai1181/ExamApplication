@@ -76,8 +76,8 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
         qrCodeReaderView.setBackCamera();
 
 
-        /*//string JSON TO TEXT
-        String jsonMovie = "{\n" +
+        //string JSON TO TEXT
+      /*  String jsonMovie = "{\n" +
                 "  \"title\": \"The Godfather\",\n" +
                 "  \"image\": \"https://www.imdb.com/title/tt0068646/mediaviewer/rm746868224.jpg\",\n" +
                 "  \"rating\": 9.2,\n" +
@@ -100,8 +100,8 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
             SplashActivity.addDataToDB(newMovie);
         } else {
             Snackbar.make(appCompatActivity.findViewById(R.id.fragments_container), "Current movie already exist in the Database ", Snackbar.LENGTH_SHORT).show();
-        }*/
-
+        }
+*/
         return view;
     }
 
@@ -188,7 +188,7 @@ public class QRFragment extends Fragment implements QRCodeReaderView.OnQRCodeRea
         boolean answer = checkDataInDB(newMovie);
         Log.d(TAG, "onCreateView: " + answer);
 
-        if(answer){
+        if(!answer){
             SplashActivity.addDataToDB(newMovie);
         }else {
             Snackbar.make(appCompatActivity.findViewById(R.id.fragments_container),"Current movie already exist in the Database " ,Snackbar.LENGTH_SHORT).show();

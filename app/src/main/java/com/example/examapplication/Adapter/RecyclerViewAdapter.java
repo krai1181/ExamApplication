@@ -84,11 +84,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<MovieViewHolder> {
                     }
                 });
 
-      /*  Glide.with(context)
-                .asBitmap()
-                .load(movie.getImage())
-                .into(movieViewHolder.movieImageView);*/
-
 
         final String str = Arrays.toString(movie.getGenre());
         movieViewHolder.genreTextView.setText(str);
