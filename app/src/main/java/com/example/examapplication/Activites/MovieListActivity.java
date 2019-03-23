@@ -82,9 +82,11 @@ public class MovieListActivity extends AppCompatActivity {
         Log.d(TAG, "onStart: start Movie List Activity");
         super.onStart();
        Movie newMovie = checkFromDataBase();
+        Log.d(TAG, "onStart: ");
         if(!moviesList.contains(newMovie))
-            moviesList.add(newMovie);
-
+            while (moviesList.size()<cursor.getCount()) {
+                moviesList.add(newMovie);
+            }
         //recycler view
         initRecyclerView();
     }
@@ -111,16 +113,16 @@ public class MovieListActivity extends AppCompatActivity {
             Log.d(TAG, "checkFromDataBase: ERROR! No movie to read");
         }
 
-        Movie m;
+        Movie m = new Movie();
         Log.d(TAG, "readFromData: cursor count " + cursor.getCount());
         //cursor.moveToFirst();
 
-        do {
+       while (cursor.moveToNext()){
             String[] strGenre = convertStringToArray(cursor.getString(4));
              m = new Movie(cursor.getString(0), cursor.getString(1),
                     cursor.getDouble(2), cursor.getInt(3), strGenre);
             Log.d(TAG, "readFromData: movie list size  " + moviesList.size());
-        } while (cursor.moveToNext());
+        }
 
         return m;
     }

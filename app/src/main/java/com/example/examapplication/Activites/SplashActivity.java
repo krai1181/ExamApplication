@@ -1,6 +1,8 @@
 package com.example.examapplication.Activites;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.Call;
@@ -90,13 +93,15 @@ public class SplashActivity extends AppCompatActivity {
 
                      movies = Arrays.asList(gson.fromJson(someResponse, Movie[].class));
                      isSuccsess = true;
+
+                     Collections.sort(movies);
                      for(Movie m:movies){
                          Log.d(TAG, "onResponse: Title " + m.getTitle() + " utl Image "+ m.getImage() + " Rating " + m.getRating()
                          + "genre " + m.getGenre() + "MOVIES SIZE : " + movies.size());
 
                          //save to db
                          if(!dataBaseHelper.isTableExists(db,DataBaseHelper.TABLE_NAME) || dataBaseHelper.numberOfRows()<movies.size()){
-                             addDataToDB(m);
+                                 addDataToDB(m);
                          }else{
                              Log.d(TAG, "onResponse: DB already exist" + " number of rows is " + dataBaseHelper.numberOfRows());
                          }
@@ -119,7 +124,6 @@ public class SplashActivity extends AppCompatActivity {
     // adding data to SQLiteDatabase
     public static void addDataToDB(Movie movie){
        String stringGenre =  convertListToString(movie.getGenre());
-
         boolean insertData = dataBaseHelper.addData(movie.getTitle(),movie.getImage(),movie.getRating(),
                 movie.getReleaseYear(),stringGenre);
 
@@ -129,6 +133,35 @@ public class SplashActivity extends AppCompatActivity {
             Log.d(TAG, "addDataToDB: Something went wrong");
 
         }
+    }
+
+    private boolean checkDataInDB(Movie m, Context context) {
+        boolean answerFromDB;
+        //create DBHelper
+        dataBaseHelper = new DataBaseHelper(context);
+        dataBaseHelper.getReadableDatabase();
+        // readFromData
+        Cursor cursor = dataBaseHelper.readFromData();
+
+        Log.d(TAG, "readFromData: cursor count " + cursor.getCount());
+        if (cursor.moveToFirst()) {
+
+            do {
+                //checking data
+                if (!cursor.getString(0).equals(m.getTitle())) {
+                    answerFromDB = true;
+                } else {
+                    answerFromDB = false;
+                    Log.d(TAG, "checkDataInDB: answer from database is " + answerFromDB);
+                }
+            } while (cursor.moveToNext());
+        } else {
+            answerFromDB = false;
+        }
+        //close db
+        cursor.close();
+        dataBaseHelper.close();
+        return answerFromDB;
     }
 
     public static String convertListToString(String[] stringArray) {
